@@ -34,6 +34,14 @@ func init() {
 
 func main() {
 
+	embededSample()
+
+	fmt.Println("============================================")
+
+	entSample()
+}
+
+func embededSample() {
 	defer db.Close()
 
 	rows, err := db.Query(`SELECT * FROM sample_table WHERE id < $1`, 4)
@@ -60,10 +68,6 @@ func main() {
 		}
 		fmt.Printf("%v, %v, %v, %v, %v, %v, %v, %v, %v \n", id, name, age, assets, height, alive, birthday, birthAt, note)
 	}
-
-	fmt.Println("============================================")
-
-	entSample()
 }
 
 func entSample() {
