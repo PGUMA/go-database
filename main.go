@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"time"
 
 	"entgo.io/ent/dialect"
 	"github.com/PGUMA/go-database/ent"
@@ -13,11 +14,25 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func main() {
-	db, err := sql.Open("postgres", "host=127.0.0.1 port=15432 user=postgres password=password dbname=dev sslmode=disable")
+var db *sql.DB
+
+func init() {
+	var err error
+	db, err = sql.Open("postgres", "host=127.0.0.1 port=15432 user=postgres password=password dbname=dev sslmode=disable")
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	it, _ := time.ParseDuration("5s")
+	lt, _ := time.ParseDuration("60s")
+
+	db.SetConnMaxIdleTime(it)
+	db.SetConnMaxLifetime(lt)
+	db.SetMaxIdleConns(2)
+	db.SetMaxOpenConns(2)
+}
+
+func main() {
 
 	defer db.Close()
 
