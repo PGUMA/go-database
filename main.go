@@ -23,6 +23,12 @@ func init() {
 		log.Fatal(err)
 	}
 
+	ctx := context.Background()
+	err = db.PingContext(ctx) // dbへの実際に接続を確立しに行かせることで以降のSQL発行時に接続エラーが起こる可能性を軽減
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	it, _ := time.ParseDuration("5s")
 	lt, _ := time.ParseDuration("60s")
 
